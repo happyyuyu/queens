@@ -14,6 +14,41 @@ void print(int size, int * a);
 void display();
 void count(int * counter);
 
+int main(){
+  int countTracker = 0;
+  int * counter = &countTracker;
+  char input;
+
+
+  printf("Enter c for count, d for display, or q to quit: ");
+  scanf("%c", &input);
+
+  while (input != 'q'){
+    if (input == 'd'){
+      display();
+      scanf("%c", &input);
+    }
+    else if (input == 'c'){
+      count(counter);
+      scanf("%c", &input);
+    }
+    else{
+      printf("Sorry, I don't understand that. Please try again: ");
+      scanf("%c", &input);
+    }
+  }
+  exit(0);
+
+
+  // struct timeval startTime, endTime;
+  // gettimeofday(&startTime, NULL);
+  // recurse2(13, 0, a, counter);
+  // printf("%d", count);
+  // gettimeofday(&endTime, NULL);
+  // printf("\n");
+  // printf("Elapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
+}
+
 int checkHori(int position, int curC, int * a){
   for (int i = 0; i < curC; i++){
     if (a[i] == position) return 0;
@@ -120,39 +155,4 @@ void count(int * counter){
   }
   *counter = 0;
   free(a);
-}
-
-int main(){
-  int countTracker = 0;
-  int * counter = &countTracker;
-  char input;
-
-
-  printf("Enter c for count, d for display, or q to quit: ");
-  scanf("%c", &input);
-
-  while (input != 'q'){
-    if (input == 'd'){
-      display();
-      scanf("%c", &input);
-    }
-    else if (input == 'c'){
-      count(counter);
-      scanf("%c", &input);
-    }
-    else{
-      printf("Sorry, I don't understand that. Please try again: ");
-      scanf("%c", &input);
-    }
-  }
-  exit(0);
-
-
-  // struct timeval startTime, endTime;
-  // gettimeofday(&startTime, NULL);
-  // recurse2(13, 0, a, counter);
-  // printf("%d", count);
-  // gettimeofday(&endTime, NULL);
-  // printf("\n");
-  // printf("Elapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
 }
