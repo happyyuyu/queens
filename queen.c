@@ -21,20 +21,8 @@ int checkHori(int position, int curC, int * a){
   return 1;
 }
 
-
 int checkDiag(int position, int curC, int * a){
   for (int i = 0; i < curC; i++){
-    // printf("i: %d", i);
-    // printf("\n");
-    // printf("a[i]: %d", a[i]);
-    // printf("\n");
-    // printf("Current Column: %d", curC);
-    // printf("\n");
-    // printf("Position: %d", position);
-    // printf("\n");
-    // printf("RESULT: %d", (a[i] + (curC - i)));
-    // printf("\n");
-    // printf("\n");
     if ((a[i] + (curC - i)) == position) return 0;
     if ((a[i] - (curC - i)) == position) return 0;
   }
@@ -158,16 +146,6 @@ int main(){
     }
   }
   exit(0);
-  // switch(input){
-  //   case 'd':
-  //     display();
-
-  //   case 'c':
-  //     count(counter);
-
-  //   case 'q':
-  //     exit(0);
-  // }
 
 
   // struct timeval startTime, endTime;
