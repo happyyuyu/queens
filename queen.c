@@ -1,3 +1,5 @@
+// Authors: Harry Zhou and Niall Williams
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
