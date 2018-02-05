@@ -8,7 +8,6 @@
 #include <string.h>
 #include <sys/time.h>
 
-char getModeInput();
 int getBoardSize();
 int displayRecurse(int size, int cur, int * a);
 int countRecurse(int size, int cur, int * a, int * counter);
@@ -49,65 +48,6 @@ int main(){
       scanf("%c", &input);
     }
   }
-
-  // printf("Enter c for count, d for display, or q to quit: ");
-  // input = getModeInput();
-  // while (input != 'q' || input != 'Q'){
-  //   if(input != 'q' && input != 'Q' && input != 'c' && input != 'C' && input != 'd' && input != 'D'){
-  //     printf("I don't understand that. Try again: ");
-  //     input = getModeInput();
-  //     // return 1;
-  //   }
-  // }
-  // printf("%c", input);
-  // scanf("%c", &input);
-
-   
-
-  // if (input != 'q' && input != 'Q' && input != 'c' && input != 'C' && input != 'd' && input != 'D'){
-  //     printf("Sorry, I don't understand that. Please try again: ");
-  //     scanf("%c", &input);
-  // }
-  // else{
-  //   while (input != 'q' || input != 'Q'){
-  //   //Display mode
-    // if (input == 'd' || input == 'D'){
-    //   display();
-    //   scanf("%c", &input);
-    // }
-
-    // //Count mode
-    // else if (input == 'c' || input == 'C'){
-    //   count(counter);
-    //   scanf("%c", &input);
-    // }
-
-  //   //Invalid input
-  //   // else{
-  //   // }
-  //   }
-  //   exit(0); //Quit
-  // }
-
-
-
-
-  // struct timeval startTime, endTime;
-  // gettimeofday(&startTime, NULL);
-  // recurse2(13, 0, a, counter);
-  // printf("%d", count);
-  // gettimeofday(&endTime, NULL);
-  // printf("\n");
-  // printf("Elapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
-}
-
-char getModeInput(){
-  char charInput;
-
-  scanf("%c", &charInput);
-  // printf("%c", charInput);
-
-  return charInput;
 }
 
 /* Check the horizontal spots on the board for the given position curC. Returns true if 
@@ -223,9 +163,9 @@ void display(){
 
   if (result){
     print(size, a);
-    printf("\nElapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + 
+    printf("Elapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + 
                                       (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
-    printf("\n");
+    printf("\n\n");
   }
   else
     printf("No solutions exist!");
@@ -253,11 +193,11 @@ void count(int * counter){
   int result = countRecurse(size, 0, a, counter);
   gettimeofday(&endTime, NULL); //End timer
   
-  if (*counter > 0){
+  if (*counter > 0){ //If there are solutions
     printf("Total number of solutions: %d", (int) *counter);
     printf("\nElapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + 
                                       (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
-    printf("\n");
+    printf("\n\n");
   }
   else 
     printf("No solutions exist!");
