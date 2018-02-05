@@ -1,13 +1,17 @@
-// Authors: Harry Zhou and Niall Williams
+/**Authors: Harry Zhou and Niall Williams
+ * n Queens
+ * CSC 322 - Programming Languages
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <sys/time.h>
 
-int recurse(int size, int cur, int * a);
-int recurse2(int size, int cur, int * a, int * counter);
+char getModeInput();
+int getBoardSize();
+int displayRecurse(int size, int cur, int * a);
+int countRecurse(int size, int cur, int * a, int * counter);
 int checkHori(int position, int curC, int * a);
 int checkDiag(int position, int curC, int * a);
 void print(int size, int * a);
@@ -19,25 +23,73 @@ int main(){
   int * counter = &countTracker;
   char input;
 
+  while(1){
+    printf("Enter c for count, d for display, or q to quit: ");
+    scanf("%s", &input);
 
-  printf("Enter c for count, d for display, or q to quit: ");
-  scanf("%c", &input);
+    if(input != 'q' && input != 'Q' && input != 'c' && 
+       input != 'C' && input != 'd' && input != 'D'){
+         printf("I don't understand that. Try again.\n");
+       }
 
-  while (input != 'q'){
-    if (input == 'd'){
+    //Quit
+    if (input == 'q' || input == 'Q'){
+      return 0;
+    }
+
+    //Display mode
+    else if (input == 'd' || input == 'D'){
       display();
       scanf("%c", &input);
     }
-    else if (input == 'c'){
+
+    //Count mode
+    else if (input == 'c' || input == 'C'){
       count(counter);
       scanf("%c", &input);
     }
-    else{
-      printf("Sorry, I don't understand that. Please try again: ");
-      scanf("%c", &input);
-    }
   }
-  exit(0);
+
+  // printf("Enter c for count, d for display, or q to quit: ");
+  // input = getModeInput();
+  // while (input != 'q' || input != 'Q'){
+  //   if(input != 'q' && input != 'Q' && input != 'c' && input != 'C' && input != 'd' && input != 'D'){
+  //     printf("I don't understand that. Try again: ");
+  //     input = getModeInput();
+  //     // return 1;
+  //   }
+  // }
+  // printf("%c", input);
+  // scanf("%c", &input);
+
+   
+
+  // if (input != 'q' && input != 'Q' && input != 'c' && input != 'C' && input != 'd' && input != 'D'){
+  //     printf("Sorry, I don't understand that. Please try again: ");
+  //     scanf("%c", &input);
+  // }
+  // else{
+  //   while (input != 'q' || input != 'Q'){
+  //   //Display mode
+    // if (input == 'd' || input == 'D'){
+    //   display();
+    //   scanf("%c", &input);
+    // }
+
+    // //Count mode
+    // else if (input == 'c' || input == 'C'){
+    //   count(counter);
+    //   scanf("%c", &input);
+    // }
+
+  //   //Invalid input
+  //   // else{
+  //   // }
+  //   }
+  //   exit(0); //Quit
+  // }
+
+
 
 
   // struct timeval startTime, endTime;
@@ -49,6 +101,17 @@ int main(){
   // printf("Elapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
 }
 
+char getModeInput(){
+  char charInput;
+
+  scanf("%c", &charInput);
+  // printf("%c", charInput);
+
+  return charInput;
+}
+
+/* Check the horizontal spots on the board for the given position curC. Returns true if 
+there is a valid diagonal spot to place a queen. */
 int checkHori(int position, int curC, int * a){
   for (int i = 0; i < curC; i++){
     if (a[i] == position) return 0;
@@ -56,29 +119,36 @@ int checkHori(int position, int curC, int * a){
   return 1;
 }
 
+/* Check the diagonal spots on the board for the given position curC. Returns true if 
+there is a valid diagonal spot to place a queen. */
 int checkDiag(int position, int curC, int * a){
   for (int i = 0; i < curC; i++){
-    if ((a[i] + (curC - i)) == position) return 0;
-    if ((a[i] - (curC - i)) == position) return 0;
+    if (((a[i] + (curC - i)) == position) || ((a[i] - (curC - i)) == position)) 
+      return 0;
   }
+
   return 1;
 }
 
-int recurse(int size, int curC, int * a){
+/* Recursively solves an nxn chessboard and stores the queens' locations in an array. */
+int displayRecurse(int size, int curC, int * a){
+  //When we are on the last column
   if (curC == size - 1){
     for(int i = 0; i < size; i++){
       if (checkDiag(i, curC, a) && checkHori(i, curC, a)){
         a[curC] = i;
-        return 1;
+        return 1; //Solution found, quit out
       }
     }
     return 0;
   }
+
+  //Keep going
   else{
     for(int i = 0; i < size; i++){
       if (checkDiag(i, curC, a) && checkHori(i, curC, a)){
         a[curC] = i;
-        if (recurse(size, curC + 1, a)) return 1;
+        if (displayRecurse(size, curC + 1, a)) return 1;
       }
     }
     return 0;
@@ -86,22 +156,26 @@ int recurse(int size, int curC, int * a){
   return 0;
 }
 
-int recurse2(int size, int curC, int * a, int * counter){
+/* Recursively counts all unique solutions in an nxn chessboard. */
+int countRecurse(int size, int curC, int * a, int * counter){
+  //When we are on the last column
   if (curC == size - 1){
     for(int i = 0; i < size; i++){
       if (checkDiag(i, curC, a) && checkHori(i, curC, a)){
         a[curC] = i;
-        *counter +=  1;
+        *counter +=  1; //Solution found, increment counter
         return 1;
       }
     }
     return 0;
   }
+
+  //Keep going
   else{
     for(int i = 0; i < size; i++){
       if (checkDiag(i, curC, a) && checkHori(i, curC, a)){
         a[curC] = i;
-        recurse2(size, curC + 1, a, counter);
+        countRecurse(size, curC + 1, a, counter);
       }
     }
     return 0;
@@ -109,50 +183,86 @@ int recurse2(int size, int curC, int * a, int * counter){
   return 0;
 }
 
+/* Prints the solved chessboard of the correct size. */
 void print(int size, int * a){
-  for (int i = 0; i < size*2+1; i++){
+  for (int i = 0; i < size*2+1; i++)
     printf("-");
-  }
   printf("\n");
+
   for (int i = 0; i < size; i++){
     for (int j = 0; j < size; j++){
       int queenPos = a[j];
-      if (i == queenPos) printf("|Q");
-      else printf("|_");
+      if (i == queenPos) 
+        printf("|Q");
+      else 
+        printf("|_");
     }
     printf("|\n");
   }
 }
 
+/* Function that creates the array of appropriate size and calls the display 
+recursive function. Prints the output of the display recursive function. */
 void display(){
-  int size;
+  int size = 0;
+  struct timeval startTime, endTime;
 
   printf("Enter size of chessboard, n: ");
   scanf("%d", &size);
-  int * a = (int *)malloc(size * sizeof(int));
-  int result = recurse(size, 0, a);
+
+  //Ensure the board size is valid
+  while (size < 1){
+    printf("Please enter a positive number: ");
+    scanf("%d", &size);
+  }
+
+  gettimeofday(&startTime, NULL); //Begin timer
+  int * a = (int *)malloc(size * sizeof(int)); //Create array of the correct size
+  int result = displayRecurse(size, 0, a);
+  gettimeofday(&endTime, NULL); //End timer
+
   if (result){
     print(size, a);
+    printf("\nElapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + 
+                                      (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
+    printf("\n");
   }
-  else{
+  else
     printf("No solutions exist!");
-  }
-  free(a);
+  
+  free(a); //Reset the array so the user can try another board size
 }
 
+/* Function that creates the array of appropriate size and calls the counting 
+recursive function. Prints the output of the counting recursive function. */
 void count(int * counter){
-  int size;
+  int size = 0;
+  struct timeval startTime, endTime;
 
   printf("Enter size of chessboard, n: ");
   scanf("%d", &size);
-  int * a = (int *)malloc(size * sizeof(int));
-  int result = recurse2(size, 0, a, counter);
-  if (result){
-    print("Total number of solutions: %d", *counter);
+
+  //Ensure the board size is valid
+  while (size < 1){
+    printf("Please enter a positive number: ");
+    scanf("%d", &size);
   }
-  else{
+
+  gettimeofday(&startTime, NULL); //Begin timer
+  int * a = (int *)malloc(size * sizeof(int)); //Create array of the correct size
+  int result = countRecurse(size, 0, a, counter);
+  gettimeofday(&endTime, NULL); //End timer
+  
+  if (*counter > 0){
+    printf("Total number of solutions: %d", (int) *counter);
+    printf("\nElapsed time: %f seconds", (float)(endTime.tv_sec - startTime.tv_sec) + 
+                                      (float)(endTime.tv_usec - startTime.tv_usec)/1000000);
+    printf("\n");
+  }
+  else 
     printf("No solutions exist!");
-  }
+  
+  //Reset the counter and the array so the user can try another board size
   *counter = 0;
   free(a);
 }
